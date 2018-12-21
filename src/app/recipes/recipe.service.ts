@@ -1,7 +1,9 @@
 import { Recipe } from "./recipe.model";
-import { EventEmitter, Output } from "@angular/core";
+import { EventEmitter, Output, Injectable } from "@angular/core";
 import { Ingredient } from "../shared/ingredient.model";
+import { ShoppingListService } from "../shopping-list/shopping-list.service";
 
+@Injectable()
 export class RecipeService {
   private recipes: Recipe[] = [
     new Recipe(
@@ -20,7 +22,13 @@ export class RecipeService {
 
   @Output() onDetail = new EventEmitter<Recipe>();
 
+  constructor(private shoppingListService: ShoppingListService) {}
+
   getRecipe() {
     return this.recipes.slice();
+  }
+
+  addIngredientsToShoppingList(ingredients: Ingredient[]) {
+    this.shoppingListService.addIngredients(ingredients);
   }
 }
